@@ -1,0 +1,72 @@
+Buatkan aplikasi web portofolio modern, responsif, dan full-stack menggunakan Next.js (App Router), Tailwind CSS, TypeScript, dan Supabase (Auth, Database, Storage) yang siap di-deploy ke Vercel.
+
+### 1. Arsitektur & Konfigurasi Supabase
+Sertakan juga skrip SQL lengkap untuk membuat tabel database, kebijakan Row Level Security (RLS), dan konfigurasi Supabase Storage bucket.
+- **Environment Variables:** Gunakan `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- **Database Schema (`projects`):**
+  - `id`: uuid (primary key, default gen_random_uuid())
+  - `title`: text (not null)
+  - `slug`: text (unique, not null)
+  - `category`: text (enum/check: 'Web App', 'Mobile App', 'UI/UX', 'Business')
+  - `short_description`: text
+  - `content`: text (penjelasan lengkap proyek, mendukung format Markdown/Rich Text)
+  - `thumbnail_url`: text
+  - `media_files`: jsonb (array berisi objek `{ type: 'image' | 'video' | 'document', url: string, name: string }`)
+  - `tech_stack`: text[] (array tag teknologi/tools)
+  - `live_url`: text (opsional)
+  - `repo_url`: text (opsional)
+  - `created_at`: timestamp with time zone (default now())
+- **Database Schema (`profile`):**
+  - `id`: uuid (primary key)
+  - `full_name`: text
+  - `headline`: text
+  - `about`: text
+  - `experience`: jsonb (array pengalaman kerja/organisasi)
+  - `education`: jsonb (array riwayat pendidikan)
+  - `skills`: text[]
+  - `contact_email`: text
+  - `social_links`: jsonb
+  - `cv_file_url`: text
+- **Storage Buckets:** Buat bucket publik bernama `portfolio-assets` dengan struktur folder untuk gambar, video, dan dokumen (PDF/DOCX/PPTX), lengkap dengan policy agar publik bisa membaca (SELECT) dan hanya user yang terautentikasi (Admin) yang bisa upload/update/delete.
+
+### 2. Struktur Halaman & Fitur Utama
+
+#### A. Navigasi (Navbar)
+- Buat navigasi utama yang bersih dan sticky di bagian atas dengan menu:
+  1. **Home** (`/`)
+  2. **Web App** (`/category/web-app`)
+  3. **Mobile App** (`/category/mobile-app`)
+  4. **UI/UX** (`/category/ui-ux`)
+  5. **Business** (`/category/business`)
+- Tambahkan tombol toggle Dark/Light mode.
+
+#### B. Homepage (`/`)
+- Tampilkan profil profesional layaknya CV interaktif dan modern:
+  - **Hero Section:** Nama lengkap, headline/role, ringkasan singkat, tombol "Download CV" (mengambil file PDF dari Supabase), dan tautan media sosial (LinkedIn, GitHub, Email).
+  - **About & Skills:** Deskripsi diri dan badge keahlian/tech stack yang dikelompokkan.
+  - **Experience & Education:** Tampilan timeline vertikal untuk riwayat pekerjaan, magang, atau pendidikan.
+  - **Featured Projects:** Cuplikan beberapa proyek terbaru dari berbagai kategori dengan tombol menuju halaman kategori terkait.
+
+#### C. Halaman Kategori Proyek (`/category/[slug]`)
+- Menampilkan daftar proyek sesuai kategori yang dipilih (`Web App`, `Mobile App`, `UI/UX`, `Business`) dalam bentuk grid card yang rapi (thumbnail, judul, deskripsi singkat, dan tag tools).
+- Ketika card diklik, buka **Halaman Detail Proyek** (`/project/[slug]`) atau Modal Preview interaktif yang berisi:
+  - Penjelasan lengkap proyek (problem, solution, role, hasil).
+  - **Media Previewer Terintegrasi:**
+    - **Foto:** Galeri gambar dengan fitur lightbox/zoom.
+    - **Video:** Pemutar video HTML5 bawaan yang responsif.
+    - **Dokumen (PDF/Presentasi):** Embedded document viewer (menggunakan `<iframe>` atau PDF viewer) agar pengunjung bisa langsung membaca dokumen/deck bisnis/studi kasus di halaman tersebut tanpa wajib mengunduhnya terlebih dahulu, disertai tombol download.
+
+#### D. Halaman Admin (`/admin` & `/login`)
+- **Autentikasi:** Halaman `/login` menggunakan Supabase Auth (Email & Password). Proteksi seluruh rute `/admin/*` menggunakan Next.js Middleware agar tidak bisa diakses publik.
+- **Dashboard Admin (`/admin`):**
+  - **Manajemen Profil/CV:** Form untuk mengedit data diri, pengalaman, pendidikan, skills, dan mengunggah file CV terbaru.
+  - **Manajemen Proyek (CRUD):**
+    - Daftar semua proyek dengan filter kategori dan tombol Edit/Hapus.
+    - Form Tambah/Edit Proyek dengan fitur **Multi-file Drag & Drop Upload** ke Supabase Storage yang mendukung upload banyak foto, video (MP4/WebM), dan dokumen (PDF) sekaligus, lengkap dengan progress bar upload dan preview sebelum disimpan.
+
+### 3. Desain & Pengalaman Pengguna (UI/UX)
+- Gunakan desain minimalis, modern, dan profesional (gunakan ikon dari `lucide-react`).
+- Pastikan seluruh komponen (terutama video player, document previewer, dan tabel admin) sepenuhnya responsif untuk tampilan desktop maupun mobile.
+- Sertakan loading skeletons saat mengambil data dari Supabase dan notifikasi toast saat berhasil/gagal menyimpan data.
+
+Buatkan struktur folder proyek secara lengkap, kode untuk setiap file utama, dan langkah-langkah konfigurasi awal di Supabase sebelum melakukan deployment ke Vercel.
