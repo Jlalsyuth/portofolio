@@ -16,8 +16,10 @@ import {
   Plus, 
   Save, 
   Loader2, 
-  Check, 
-  AlertCircle 
+  Briefcase, 
+  GraduationCap, 
+  Calendar, 
+  Building2 
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Project, Profile, ExperienceItem, EducationItem } from '@/lib/types';
@@ -113,7 +115,7 @@ export default function AdminDashboardPage() {
         toast.success(`Proyek "${title}" berhasil dihapus.`);
         setProjects((prev) => prev.filter((p) => p.id !== id));
       }
-    } catch (err: any) {
+    } catch {
       toast.error('Terjadi kesalahan saat menghapus proyek.');
     } finally {
       setDeletingId(null);
@@ -143,11 +145,61 @@ export default function AdminDashboardPage() {
 
       setProfile((prev) => ({ ...prev, cv_file_url: urlData.publicUrl }));
       toast.success('File CV berhasil diunggah!');
-    } catch (err) {
+    } catch {
       toast.error('Gagal mengunggah file CV.');
     } finally {
       setCvUploading(false);
     }
+  };
+
+  // Experience Helpers
+  const handleAddExperience = () => {
+    const newItem: ExperienceItem = {
+      role: '',
+      company: '',
+      period: '',
+      description: '',
+    };
+    setProfile((prev) => ({
+      ...prev,
+      experience: [newItem, ...(prev.experience || [])],
+    }));
+  };
+
+  const handleUpdateExperience = (index: number, field: keyof ExperienceItem, value: string) => {
+    const updated = [...(profile.experience || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setProfile((prev) => ({ ...prev, experience: updated }));
+  };
+
+  const handleRemoveExperience = (index: number) => {
+    const updated = (profile.experience || []).filter((_, idx) => idx !== index);
+    setProfile((prev) => ({ ...prev, experience: updated }));
+  };
+
+  // Education Helpers
+  const handleAddEducation = () => {
+    const newItem: EducationItem = {
+      degree: '',
+      institution: '',
+      period: '',
+      description: '',
+    };
+    setProfile((prev) => ({
+      ...prev,
+      education: [newItem, ...(prev.education || [])],
+    }));
+  };
+
+  const handleUpdateEducation = (index: number, field: keyof EducationItem, value: string) => {
+    const updated = [...(profile.education || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setProfile((prev) => ({ ...prev, education: updated }));
+  };
+
+  const handleRemoveEducation = (index: number) => {
+    const updated = (profile.education || []).filter((_, idx) => idx !== index);
+    setProfile((prev) => ({ ...prev, education: updated }));
   };
 
   // Handle Save Profile
@@ -176,9 +228,9 @@ export default function AdminDashboardPage() {
       if (error) {
         toast.error(`Gagal menyimpan profil: ${error.message}`);
       } else {
-        toast.success('Data profil & CV berhasil diperbarui!');
+        toast.success('Data profil, pengalaman & riwayat pendidikan berhasil diperbarui!');
       }
-    } catch (err) {
+    } catch {
       toast.error('Terjadi kesalahan saat menyimpan profil.');
     } finally {
       setSavingProfile(false);
@@ -388,7 +440,7 @@ export default function AdminDashboardPage() {
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-6 shadow-xs">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
               <UserCircle className="w-5 h-5 text-indigo-500" />
-              Data Diri & Kontak
+              1. Data Diri & Kontak
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -496,11 +548,231 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
+          {/* Section: Pengalaman Kerja */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-6 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-indigo-500" />
+                  2. Riwayat Pengalaman Kerja ({profile.experience?.length || 0})
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  Tampilkan posisi, tempat kerja, durasi, dan uraian pencapaian karier Anda.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleAddExperience}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold transition-all hover:scale-105"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Tambah Pengalaman
+              </button>
+            </div>
+
+            {profile.experience && profile.experience.length > 0 ? (
+              <div className="space-y-4">
+                {profile.experience.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 space-y-4 relative group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                        Pengalaman #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExperience(idx)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors"
+                        title="Hapus Pengalaman"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Posisi / Role *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.role}
+                          onChange={(e) => handleUpdateExperience(idx, 'role', e.target.value)}
+                          placeholder="Lead Frontend Engineer"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Perusahaan / Organisasi *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.company}
+                          onChange={(e) => handleUpdateExperience(idx, 'company', e.target.value)}
+                          placeholder="PT Teknologi Unggul"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Periode Waktu *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.period}
+                          onChange={(e) => handleUpdateExperience(idx, 'period', e.target.value)}
+                          placeholder="2022 - Sekarang"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                        Deskripsi Tanggung Jawab & Pencapaian
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={item.description}
+                        onChange={(e) => handleUpdateExperience(idx, 'description', e.target.value)}
+                        placeholder="Merancang arsitektur aplikasi dan memimpin tim..."
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-8 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-xs text-slate-400">
+                Belum ada riwayat pengalaman kerja. Klik "+ Tambah Pengalaman" di atas.
+              </div>
+            )}
+          </div>
+
+          {/* Section: Riwayat Pendidikan */}
+          <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-6 shadow-xs">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <GraduationCap className="w-5 h-5 text-indigo-500" />
+                  3. Riwayat Pendidikan ({profile.education?.length || 0})
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  Tampilkan gelar, program studi, kampus/sekolah, dan tahun kelulusan.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleAddEducation}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/70 hover:bg-purple-100 dark:hover:bg-purple-900 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-semibold transition-all hover:scale-105"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Tambah Pendidikan
+              </button>
+            </div>
+
+            {profile.education && profile.education.length > 0 ? (
+              <div className="space-y-4">
+                {profile.education.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 space-y-4 relative group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-purple-600 dark:text-purple-400">
+                        Pendidikan #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveEducation(idx)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors"
+                        title="Hapus Pendidikan"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Gelar / Program Studi *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.degree}
+                          onChange={(e) => handleUpdateEducation(idx, 'degree', e.target.value)}
+                          placeholder="S1 Ilmu Komputer"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Institusi / Kampus *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.institution}
+                          onChange={(e) => handleUpdateEducation(idx, 'institution', e.target.value)}
+                          placeholder="Universitas Indonesia"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                          Periode / Tahun *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={item.period}
+                          onChange={(e) => handleUpdateEducation(idx, 'period', e.target.value)}
+                          placeholder="2018 - 2022"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                        Deskripsi / Fokus Akademis
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={item.description}
+                        onChange={(e) => handleUpdateEducation(idx, 'description', e.target.value)}
+                        placeholder="Fokus pada Software Engineering, Cum Laude..."
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-8 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-xs text-slate-400">
+                Belum ada riwayat pendidikan. Klik "+ Tambah Pendidikan" di atas.
+              </div>
+            )}
+          </div>
+
           {/* Section: CV Upload */}
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xs">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
               <FileText className="w-5 h-5 text-indigo-500" />
-              Unggah Dokumen CV / Resume (PDF)
+              4. Unggah Dokumen CV / Resume (PDF)
             </h2>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -534,7 +806,7 @@ export default function AdminDashboardPage() {
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4 shadow-xs">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
               <Layers className="w-5 h-5 text-indigo-500" />
-              Daftar Keahlian / Tech Stack
+              5. Daftar Keahlian / Tech Stack
             </h2>
             <p className="text-xs text-slate-500">
               Pisahkan nama teknologi dengan koma (contoh: Next.js, TypeScript, PostgreSQL, Figma)
@@ -567,7 +839,7 @@ export default function AdminDashboardPage() {
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  Simpan Perubahan Profil
+                  Simpan Perubahan Profil & Riwayat
                 </>
               )}
             </button>
