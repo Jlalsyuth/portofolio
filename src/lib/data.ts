@@ -57,6 +57,7 @@ export const FALLBACK_PROFILE: Profile = {
     twitter: 'https://twitter.com',
     website: 'https://fahri.dev',
   },
+  photo_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80',
   cv_file_url: 'https://raw.githubusercontent.com/mozilla/pdf.js/master/web/compressed.tracemonkey-pldi-09.pdf',
 };
 

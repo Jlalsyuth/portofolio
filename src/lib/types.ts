@@ -49,6 +49,7 @@ export interface Profile {
   full_name: string;
   headline?: string | null;
   about?: string | null;
+  photo_url?: string | null;
   experience?: ExperienceItem[] | null;
   education?: EducationItem[] | null;
   skills?: string[] | null;

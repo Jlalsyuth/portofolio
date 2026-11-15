@@ -10,6 +10,7 @@ import {
   Trash2, 
   ExternalLink, 
   Github,
+  Image as ImageIcon,
   FileText, 
   UserCircle, 
   Layers, 
@@ -43,6 +44,7 @@ export default function AdminDashboardPage() {
   const [loadingProfile, setLoadingProfile] = React.useState(true);
   const [savingProfile, setSavingProfile] = React.useState(false);
   const [cvUploading, setCvUploading] = React.useState(false);
+  const [photoUploading, setPhotoUploading] = React.useState(false);
 
   const supabase = createClient();
 
@@ -154,6 +156,36 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Handle Photo Upload
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPhotoUploading(true);
+    try {
+      const fileName = `photos/Photo_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      const { data, error } = await supabase.storage
+        .from('portfolio-assets')
+        .upload(fileName, file, { upsert: true });
+
+      if (error) {
+        toast.error(`Gagal mengunggah foto: ${error.message}`);
+        return;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('portfolio-assets')
+        .getPublicUrl(data.path);
+
+      setProfile((prev) => ({ ...prev, photo_url: urlData.publicUrl }));
+      toast.success('Foto profil / full body berhasil diunggah!');
+    } catch {
+      toast.error('Gagal mengunggah foto profil.');
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
   // Experience Helpers
   const handleAddExperience = () => {
     const newItem: ExperienceItem = {
@@ -214,6 +246,7 @@ export default function AdminDashboardPage() {
         full_name: profile.full_name,
         headline: profile.headline,
         about: profile.about,
+        photo_url: profile.photo_url,
         contact_email: profile.contact_email,
         social_links: profile.social_links,
         skills: profile.skills,

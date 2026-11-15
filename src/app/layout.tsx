@@ -17,14 +17,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-white dark:bg-[#090d16] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#070b12] text-slate-900 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
+        {/* Subtle grid and ambient lighting overlays */}
+        <div className="fixed inset-0 bg-grid-pattern pointer-events-none opacity-60 z-0" />
+        <div className="fixed top-0 inset-x-0 h-[700px] bg-radial-gradient pointer-events-none z-0" />
+        
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <ToastProvider />
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <ToastProvider />
+          </div>
         </ThemeProvider>
       </body>
     </html>

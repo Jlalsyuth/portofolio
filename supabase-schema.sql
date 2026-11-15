@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS public.profile (
     full_name TEXT NOT NULL,
     headline TEXT,
     about TEXT,
+    photo_url TEXT,
     experience JSONB DEFAULT '[]'::jsonb,
     education JSONB DEFAULT '[]'::jsonb,
     skills TEXT[] DEFAULT '{}',
@@ -151,12 +152,13 @@ CREATE POLICY "Authenticated Delete Portfolio Assets"
 -- ==============================================================================
 
 -- Seed Profil
-INSERT INTO public.profile (id, full_name, headline, about, experience, education, skills, contact_email, social_links, cv_file_url)
+INSERT INTO public.profile (id, full_name, headline, about, photo_url, experience, education, skills, contact_email, social_links, cv_file_url)
 VALUES (
     'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
     'Fahri Ramadhan',
     'Senior Full-Stack Engineer & Product Architect',
     'Saya seorang Software Engineer dan Product Architect yang berfokus pada pembangunan produk digital modern berskala tinggi. Berpengalaman lebih dari 5 tahun dalam ekosistem JavaScript/TypeScript (Next.js, Node.js), arsitektur cloud, database terdistribusi, serta perancangan antarmuka pengguna yang elegan dan aksesibel.',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80',
     '[
         {
             "role": "Lead Full-Stack Engineer",
