@@ -9,6 +9,7 @@ import {
   Edit, 
   Trash2, 
   ExternalLink, 
+  Github,
   FileText, 
   UserCircle, 
   Layers, 
@@ -24,6 +25,7 @@ import {
 import { createClient } from '@/lib/supabase/client';
 import { Project, Profile, ExperienceItem, EducationItem } from '@/lib/types';
 import { FALLBACK_PROFILE, FALLBACK_PROJECTS } from '@/lib/data';
+import { formatExternalUrl } from '@/lib/utils';
 import { toast } from 'sonner';
 
 export default function AdminDashboardPage() {
@@ -344,8 +346,9 @@ export default function AdminDashboardPage() {
                     <tr>
                       <th className="py-3.5 px-4">Proyek</th>
                       <th className="py-3.5 px-4">Kategori</th>
-                      <th className="py-3.5 px-4 hidden md:table-cell">Media</th>
-                      <th className="py-3.5 px-4 hidden lg:table-cell">Tanggal</th>
+                      <th className="py-3.5 px-4 hidden md:table-cell">Tautan (Demo & Repo)</th>
+                      <th className="py-3.5 px-4 hidden lg:table-cell">Media</th>
+                      <th className="py-3.5 px-4 hidden xl:table-cell">Tanggal</th>
                       <th className="py-3.5 px-4 text-right">Aksi</th>
                     </tr>
                   </thead>
@@ -378,11 +381,44 @@ export default function AdminDashboardPage() {
                           </span>
                         </td>
 
-                        <td className="py-3.5 px-4 hidden md:table-cell text-xs text-slate-500">
+                        <td className="py-3.5 px-4 hidden md:table-cell">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {proj.live_url ? (
+                              <a
+                                href={formatExternalUrl(proj.live_url)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:underline"
+                                title={proj.live_url}
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                                Demo
+                              </a>
+                            ) : (
+                              <span className="text-[11px] text-slate-400 italic">No Demo</span>
+                            )}
+                            {proj.repo_url ? (
+                              <a
+                                href={formatExternalUrl(proj.repo_url)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:underline"
+                                title={proj.repo_url}
+                              >
+                                <Github className="w-3 h-3" />
+                                GitHub
+                              </a>
+                            ) : (
+                              <span className="text-[11px] text-slate-400 italic">No Repo</span>
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="py-3.5 px-4 hidden lg:table-cell text-xs text-slate-500">
                           {proj.media_files?.length || 0} berkas
                         </td>
 
-                        <td className="py-3.5 px-4 hidden lg:table-cell text-xs text-slate-400">
+                        <td className="py-3.5 px-4 hidden xl:table-cell text-xs text-slate-400">
                           {new Date(proj.created_at).toLocaleDateString('id-ID')}
                         </td>
 

@@ -232,7 +232,7 @@ Mengurangi waktu audit keuangan mingguan sebesar 65% dan memberikan visibilitas 
     'https://demo-saas-dashboard.vercel.app',
     'https://github.com/fahri-ramadhan/saas-analytics'
 )
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) DO UPDATE SET live_url = EXCLUDED.live_url, repo_url = EXCLUDED.repo_url;
 
 -- Seed Proyek: Mobile App
 INSERT INTO public.projects (title, slug, category, short_description, content, thumbnail_url, media_files, tech_stack, live_url, repo_url)
@@ -258,10 +258,10 @@ Mencapai rating 4.8 di Play Store dalam 3 bulan pertama rilis dengan lebih dari 
         {"type": "video", "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", "name": "Mobile Demo Walkthrough"}
     ]'::jsonb,
     ARRAY['React Native', 'TypeScript', 'Tailwind CSS', 'Supabase Auth', 'Zustand'],
-    'https://play.google.com',
+    'https://play.google.com/store/apps',
     'https://github.com/fahri-ramadhan/nusantara-pay'
 )
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) DO UPDATE SET live_url = EXCLUDED.live_url, repo_url = EXCLUDED.repo_url;
 
 -- Seed Proyek: UI/UX
 INSERT INTO public.projects (title, slug, category, short_description, content, thumbnail_url, media_files, tech_stack, live_url, repo_url)
@@ -288,10 +288,10 @@ Meningkatkan completion rate kursus sebesar 34% dan skor SUS (System Usability S
         {"type": "document", "url": "https://raw.githubusercontent.com/mozilla/pdf.js/master/web/compressed.tracemonkey-pldi-09.pdf", "name": "EduSphere UI/UX Case Study Deck.pdf"}
     ]'::jsonb,
     ARRAY['Figma', 'Design System', 'User Research', 'Prototyping', 'WCAG AAA'],
-    'https://figma.com',
-    ''
+    'https://www.figma.com/community',
+    'https://github.com/fahri-ramadhan/edusphere-redesign'
 )
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) DO UPDATE SET live_url = EXCLUDED.live_url, repo_url = EXCLUDED.repo_url;
 
 -- Seed Proyek: Business
 INSERT INTO public.projects (title, slug, category, short_description, content, thumbnail_url, media_files, tech_stack, live_url, repo_url)
@@ -316,7 +316,7 @@ Dokumen pitch deck lengkap, analisis keuangan 3 tahun (financial projection mode
         {"type": "document", "url": "https://raw.githubusercontent.com/mozilla/pdf.js/master/web/compressed.tracemonkey-pldi-09.pdf", "name": "AgriLink Investor Deck.pdf"}
     ]'::jsonb,
     ARRAY['Business Modeling', 'Pitch Deck', 'Market Research', 'Financial Projection'],
-    '',
-    ''
+    'https://agrilink-supply.vercel.app',
+    'https://github.com/fahri-ramadhan/agrilink-deck'
 )
-ON CONFLICT (slug) DO NOTHING;
+ON CONFLICT (slug) DO UPDATE SET live_url = EXCLUDED.live_url, repo_url = EXCLUDED.repo_url;

@@ -1,8 +1,9 @@
+'use client';
+
 import Link from 'next/link';
-import Image from 'next/image';
 import { ExternalLink, Github, ArrowUpRight, FolderGit2 } from 'lucide-react';
 import { Project } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { cn, formatExternalUrl } from '@/lib/utils';
 
 interface ProjectCardProps {
   project: Project;
@@ -15,6 +16,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
     'UI/UX': 'bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-950/60 dark:text-pink-300 dark:border-pink-800',
     'Business': 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
   };
+
+  const formattedLiveUrl = formatExternalUrl(project.live_url);
+  const formattedRepoUrl = formatExternalUrl(project.repo_url);
 
   return (
     <div className="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-300 overflow-hidden">
@@ -80,38 +84,45 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* Card Footer Actions */}
-        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
-          <Link
-            href={`/project/${project.slug}`}
-            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1"
-          >
-            Lihat Detail
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
+        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
+          {/* Main Action Links Row */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <Link
+              href={`/project/${project.slug}`}
+              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1 group/btn"
+            >
+              Lihat Detail
+              <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+            </Link>
 
-          <div className="flex items-center gap-2">
-            {project.repo_url && (
-              <a
-                href={project.repo_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                title="Source Code"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-            )}
-            {project.live_url && (
-              <a
-                href={project.live_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                title="Live Demo"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
+            <div className="flex items-center gap-2">
+              {formattedRepoUrl && (
+                <a
+                  href={formattedRepoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs"
+                  title="Buka Repositori GitHub"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>GitHub</span>
+                </a>
+              )}
+              {formattedLiveUrl && (
+                <a
+                  href={formattedLiveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all hover:scale-105"
+                  title="Buka Live Demo"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Live Demo</span>
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

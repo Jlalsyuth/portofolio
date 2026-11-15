@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { ProjectCategory, MediaFile } from '@/lib/types';
-import { slugify } from '@/lib/utils';
+import { slugify, formatExternalUrl } from '@/lib/utils';
 import { MultiFileUpload } from '@/components/MultiFileUpload';
 import { toast } from 'sonner';
 
@@ -79,8 +79,8 @@ export default function NewProjectPage() {
         thumbnail_url: thumbnailUrl.trim() || null,
         media_files: mediaFiles,
         tech_stack: techStackArray,
-        live_url: liveUrl.trim() || null,
-        repo_url: repoUrl.trim() || null,
+        live_url: formatExternalUrl(liveUrl) || null,
+        repo_url: formatExternalUrl(repoUrl) || null,
       };
 
       const { data, error } = await supabase

@@ -101,7 +101,7 @@ Mengurangi waktu audit keuangan mingguan sebesar 65% dan memberikan visibilitas 
     ],
     tech_stack: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Supabase', 'PostgreSQL', 'Chart.js'],
     live_url: 'https://demo-saas-dashboard.vercel.app',
-    repo_url: 'https://github.com/example/saas-analytics',
+    repo_url: 'https://github.com/fahri-ramadhan/saas-analytics',
     created_at: new Date().toISOString(),
   },
   {
@@ -139,8 +139,8 @@ Mencapai rating 4.8 di Play Store dalam 3 bulan pertama rilis dengan lebih dari 
       },
     ],
     tech_stack: ['React Native', 'TypeScript', 'Tailwind CSS', 'Supabase Auth', 'Zustand'],
-    live_url: 'https://play.google.com',
-    repo_url: 'https://github.com/example/nusantara-pay',
+    live_url: 'https://play.google.com/store/apps',
+    repo_url: 'https://github.com/fahri-ramadhan/nusantara-pay',
     created_at: new Date().toISOString(),
   },
   {
@@ -179,8 +179,8 @@ Meningkatkan completion rate kursus sebesar 34% dan skor SUS (System Usability S
       },
     ],
     tech_stack: ['Figma', 'Design System', 'User Research', 'Prototyping', 'WCAG AAA'],
-    live_url: 'https://figma.com',
-    repo_url: '',
+    live_url: 'https://www.figma.com/community',
+    repo_url: 'https://github.com/fahri-ramadhan/edusphere-redesign',
     created_at: new Date().toISOString(),
   },
   {
@@ -213,8 +213,8 @@ Dokumen pitch deck lengkap, analisis keuangan 3 tahun (financial projection mode
       },
     ],
     tech_stack: ['Business Modeling', 'Pitch Deck', 'Market Research', 'Financial Projection'],
-    live_url: '',
-    repo_url: '',
+    live_url: 'https://agrilink-supply.vercel.app',
+    repo_url: 'https://github.com/fahri-ramadhan/agrilink-deck',
     created_at: new Date().toISOString(),
   },
 ];
