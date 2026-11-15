@@ -1,19 +1,19 @@
 import Link from 'next/link';
-import { 
-  Download, 
-  Linkedin, 
-  Github, 
-  Mail, 
-  Globe, 
-  Twitter, 
-  ArrowRight, 
-  Sparkles, 
-  Layers, 
-  Code2, 
-  Smartphone, 
-  Palette, 
-  Briefcase, 
-  CheckCircle, 
+import {
+  Download,
+  Linkedin,
+  Github,
+  Mail,
+  Globe,
+  Twitter,
+  ArrowRight,
+  Sparkles,
+  Layers,
+  Code2,
+  Smartphone,
+  Palette,
+  Briefcase,
+  CheckCircle,
   ExternalLink,
   Award,
   Zap,
@@ -83,7 +83,7 @@ export default async function HomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
+
             {/* Left Column: Intro & Content (7 Cols) */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               {/* Status pill */}
@@ -200,20 +200,6 @@ export default async function HomePage() {
                     </a>
                   )}
                 </div>
-
-                <div className="hidden sm:flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 pl-4 border-l border-slate-200 dark:border-slate-800">
-                  <div>
-                    <span className="font-extrabold text-slate-900 dark:text-white text-sm">5+</span> Tahun
-                  </div>
-                  <span>•</span>
-                  <div>
-                    <span className="font-extrabold text-slate-900 dark:text-white text-sm">20+</span> Proyek
-                  </div>
-                  <span>•</span>
-                  <div>
-                    <span className="font-extrabold text-slate-900 dark:text-white text-sm">100%</span> Kepuasan
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -256,7 +242,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Spesialisasi</p>
-                    <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Full-Stack & Cloud</p>
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Full-Stack Developer & Business Enabler</p>
                   </div>
                 </div>
 
@@ -264,10 +250,6 @@ export default async function HomePage() {
                 <div className="absolute -bottom-4 -right-4 sm:-right-6 px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-700/80 shadow-xl backdrop-blur-md flex items-center gap-2 animate-float-reverse z-20">
                   <div className="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                     <Award className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Hasil Teruji</p>
-                    <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Kualitas Enterprise</p>
                   </div>
                 </div>
               </div>
