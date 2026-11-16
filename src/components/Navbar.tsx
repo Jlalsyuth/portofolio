@@ -42,11 +42,15 @@ export function Navbar() {
             href="/" 
             className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-slate-900 dark:text-white group"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-5 h-5" />
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 p-0.5 flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+              <img
+                src="/Logo_Jalal.png"
+                alt="Logo Jalal"
+                className="w-full h-full object-contain rounded-lg bg-slate-950"
+              />
             </div>
             <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-600 dark:from-white dark:via-slate-200 dark:to-indigo-400 bg-clip-text text-transparent">
-              Portfolio<span className="text-indigo-600 dark:text-indigo-400">.</span>
+              Jalal Porto<span className="text-indigo-600 dark:text-indigo-400">.</span>
             </span>
           </Link>
 
