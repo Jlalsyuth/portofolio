@@ -8,8 +8,8 @@ import { CustomCursor } from '@/components/CustomCursor';
 import { InteractiveBackground } from '@/components/InteractiveBackground';
 
 export const metadata: Metadata = {
-  title: 'Professional Portfolio & Showcase | Full-Stack Engineer',
-  description: 'Portofolio modern dan profesional yang menampilkan proyek Web App, Mobile App, UI/UX, dan Business dengan teknologi Next.js dan Supabase.',
+  title: 'Jalaluddin Assyuyuti | Full-Stack Developer & Business Enabler',
+  description: 'Portofolio resmi Jalaluddin Assyuyuti, Lulusan S1 Sistem Informasi Universitas Brawijaya yang berfokus pada pengembangan Web App, Mobile App, Business Intelligence, dan solusi digital.',
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
         {/* World-Class Custom Floating Cursor */}
         <CustomCursor />
 
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />
             <main className="flex-1">

@@ -12,7 +12,6 @@ import {
   Palette, 
   Briefcase, 
   Home, 
-  ShieldCheck,
   Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -74,22 +73,8 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right Action: Admin link & Theme Toggle */}
+          {/* Right Action: Theme Toggle */}
           <div className="flex items-center gap-2">
-            <Link
-              href="/admin"
-              className={cn(
-                'hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
-                pathname.startsWith('/admin')
-                  ? 'border-indigo-600 bg-indigo-50 text-indigo-700 dark:bg-indigo-950/70 dark:text-indigo-300 dark:border-indigo-500'
-                  : 'border-slate-200 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
-              )}
-              title="Admin Dashboard"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" />
-              Admin
-            </Link>
-
             <ThemeToggle />
 
             {/* Mobile menu button */}
@@ -126,15 +111,6 @@ export function Navbar() {
               </Link>
             );
           })}
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-            <Link
-              href="/admin"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              <ShieldCheck className="w-5 h-5 text-indigo-500" />
-              Admin Dashboard
-            </Link>
-          </div>
         </div>
       )}
     </header>
