@@ -1,15 +1,56 @@
 'use client';
 
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import { ExternalLink, Github, ArrowUpRight, FolderGit2 } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Project } from '@/lib/types';
 import { cn, formatExternalUrl } from '@/lib/utils';
+import { RippleEffect } from '@/components/RippleEffect';
 
 interface ProjectCardProps {
   project: Project;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // 3D Tilt Motion Values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 25 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 25 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7deg', '-7deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7deg', '7deg']);
+
+  // Dynamic glare spotlight effect
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ['0%', '100%']);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ['0%', '100%']);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   const categoryColors: Record<string, string> = {
     'Web App': 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800',
     'Mobile App': 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800',
@@ -21,14 +62,37 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const formattedRepoUrl = formatExternalUrl(project.repo_url);
 
   return (
-    <div className="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm hover:shadow-xl hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-300 overflow-hidden">
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: 'preserve-3d',
+      }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.25 }}
+      className="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/70 shadow-sm hover:shadow-2xl hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-colors duration-300 overflow-hidden backdrop-blur-sm"
+    >
+      {/* Glare spotlight layer */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl z-20"
+        style={{
+          background: `radial-gradient(600px circle at ${glareX} ${glareY}, rgba(99, 102, 241, 0.15), transparent 45%)`,
+        }}
+      />
+
       {/* Thumbnail Container */}
-      <Link href={`/project/${project.slug}`} className="block relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+      <Link
+        href={`/project/${project.slug}`}
+        className="block relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-800"
+      >
         {project.thumbnail_url ? (
           <img
             src={project.thumbnail_url}
             alt={project.title}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading="lazy"
           />
         ) : (
@@ -37,7 +101,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             <span className="text-xs font-medium">No preview available</span>
           </div>
         )}
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 z-10">
           <span
             className={cn(
               'px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-sm',
@@ -50,7 +114,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </Link>
 
       {/* Content */}
-      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
+      <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between relative z-10">
         <div>
           <Link href={`/project/${project.slug}`} className="group/title block">
             <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white group-hover/title:text-indigo-600 dark:group-hover/title:text-indigo-400 transition-colors line-clamp-1 flex items-center justify-between">
@@ -69,7 +133,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               {project.tech_stack.slice(0, 4).map((tech, i) => (
                 <span
                   key={i}
-                  className="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50"
+                  className="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50 hover:border-indigo-400 dark:hover:border-indigo-500/60 transition-colors"
                 >
                   {tech}
                 </span>
@@ -85,7 +149,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Card Footer Actions */}
         <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
-          {/* Main Action Links Row */}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <Link
               href={`/project/${project.slug}`}
@@ -97,35 +160,39 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
             <div className="flex items-center gap-2">
               {formattedRepoUrl && (
-                <a
-                  href={formattedRepoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs"
-                  title="Buka Repositori GitHub"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
+                <RippleEffect color="rgba(99, 102, 241, 0.2)" className="rounded-lg">
+                  <a
+                    href={formattedRepoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all shadow-2xs hover:scale-105 active:scale-95"
+                    title="Buka Repositori GitHub"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    <span>GitHub</span>
+                  </a>
+                </RippleEffect>
               )}
               {formattedLiveUrl && (
-                <a
-                  href={formattedLiveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all hover:scale-105"
-                  title="Buka Live Demo"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Live Demo</span>
-                </a>
+                <RippleEffect color="rgba(255, 255, 255, 0.4)" className="rounded-lg">
+                  <a
+                    href={formattedLiveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all hover:scale-105 active:scale-95"
+                    title="Buka Live Demo"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Live Demo</span>
+                  </a>
+                </RippleEffect>
               )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

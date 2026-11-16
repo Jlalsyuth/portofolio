@@ -1,72 +1,47 @@
-Buatkan aplikasi web portofolio modern, responsif, dan full-stack menggunakan Next.js (App Router), Tailwind CSS, TypeScript, dan Supabase (Auth, Database, Storage) yang siap di-deploy ke Vercel.
+Role: Anda adalah Senior Full-Stack Engineer & UI/UX Motion Designer yang ahli dalam Next.js 14+ (App Router), TypeScript, Tailwind CSS, dan Framer Motion / Web Animations.
 
-### 1. Arsitektur & Konfigurasi Supabase
-Sertakan juga skrip SQL lengkap untuk membuat tabel database, kebijakan Row Level Security (RLS), dan konfigurasi Supabase Storage bucket.
-- **Environment Variables:** Gunakan `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-- **Database Schema (`projects`):**
-  - `id`: uuid (primary key, default gen_random_uuid())
-  - `title`: text (not null)
-  - `slug`: text (unique, not null)
-  - `category`: text (enum/check: 'Web App', 'Mobile App', 'UI/UX', 'Business')
-  - `short_description`: text
-  - `content`: text (penjelasan lengkap proyek, mendukung format Markdown/Rich Text)
-  - `thumbnail_url`: text
-  - `media_files`: jsonb (array berisi objek `{ type: 'image' | 'video' | 'document', url: string, name: string }`)
-  - `tech_stack`: text[] (array tag teknologi/tools)
-  - `live_url`: text (opsional)
-  - `repo_url`: text (opsional)
-  - `created_at`: timestamp with time zone (default now())
-- **Database Schema (`profile`):**
-  - `id`: uuid (primary key)
-  - `full_name`: text
-  - `headline`: text
-  - `about`: text
-  - `experience`: jsonb (array pengalaman kerja/organisasi)
-  - `education`: jsonb (array riwayat pendidikan)
-  - `skills`: text[]
-  - `contact_email`: text
-  - `social_links`: jsonb
-  - `cv_file_url`: text
-- **Storage Buckets:** Buat bucket publik bernama `portfolio-assets` dengan struktur folder untuk gambar, video, dan dokumen (PDF/DOCX/PPTX), lengkap dengan policy agar publik bisa membaca (SELECT) dan hanya user yang terautentikasi (Admin) yang bisa upload/update/delete.
+Context: 
+Saya memiliki web app portofolio dengan struktur direktori sebagai berikut:
+portofolio/
+├── src/
+│   ├── app/
+│   │   ├── admin/ ... (Dashboard CRUD & editor profil terproteksi)
+│   │   ├── category/[slug]/page.tsx
+│   │   ├── project/[slug]/page.tsx
+│   │   ├── login/page.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx (ThemeProvider, Toast, Navbar, Footer)
+│   │   └── page.tsx (Homepage utama)
+│   ├── components/
+│   │   ├── Navbar.tsx, Footer.tsx, ThemeToggle.tsx, ThemeProvider.tsx, ToastProvider.tsx
+│   │   ├── ProjectCard.tsx, MediaViewer.tsx, MultiFileUpload.tsx, Timeline.tsx, SkeletonCard.tsx
+│   ├── lib/
+│   │   ├── types.ts, utils.ts, data.ts, supabase/
+└── package.json
+└── tailwind.config.ts
 
-### 2. Struktur Halaman & Fitur Utama
+Goal / Tugas Utama:
+Saya ingin memperbarui tampilan dan pengalaman pengguna (UI/UX) website portofolio ini agar jauh lebih interaktif, modern, dan berkelas dunia dengan menambahkan sistem animasi tingkat lanjut serta section partnership.
 
-#### A. Navigasi (Navbar)
-- Buat navigasi utama yang bersih dan sticky di bagian atas dengan menu:
-  1. **Home** (`/`)
-  2. **Web App** (`/category/web-app`)
-  3. **Mobile App** (`/category/mobile-app`)
-  4. **UI/UX** (`/category/ui-ux`)
-  5. **Business** (`/category/business`)
-- Tambahkan tombol toggle Dark/Light mode.
+Instruksi Spesifik Perubahan:
+1. **Animasi & Motion Design (Framer Motion / CSS / Tailwind):**
+   - **Scroll Animations:** Terapkan efek scroll-triggered reveal (fade-in, slide-up, stagger children) pada section di Homepage (`page.tsx`) dan halaman detail/kategori menggunakan `framer-motion` (atau Intersection Observer jika murni CSS/Tailwind).
+   - **Interactive Background:** Tambahkan latar belakang interaktif yang dinamis (misalnya *Subtle Mesh Gradient* bergerak, *Interactive Particle Canvas*, atau *Glowing Mouse Follower Gradient* yang mengikuti kursor di belakang elemen).
+   - **Mouse Directional & Hover Effects:** Berikan efek 3D tilt / hover smooth pada `ProjectCard.tsx` dan tombol interaktif.
+   - **Mouse Click Effects:** Tambahkan efek klik yang memukau (misalnya *ripple effect* halus atau mikro-animasi pada tombol/elemen yang diklik).
+   - **Custom Cursor (Opsional & Smooth):** Buat komponen `CustomCursor.tsx` yang elegan (dot + ring ringkasan kursor yang membesar saat hover link/tombol, dengan opsi *disable* di perangkat mobile).
 
-#### B. Homepage (`/`)
-- Tampilkan profil profesional layaknya CV interaktif dan modern:
-  - **Hero Section:** Nama lengkap, headline/role, ringkasan singkat, tombol "Download CV" (mengambil file PDF dari Supabase), dan tautan media sosial (LinkedIn, GitHub, Email).
-  - **About & Skills:** Deskripsi diri dan badge keahlian/tech stack yang dikelompokkan.
-  - **Experience & Education:** Tampilan timeline vertikal untuk riwayat pekerjaan, magang, atau pendidikan.
-  - **Featured Projects:** Cuplikan beberapa proyek terbaru dari berbagai kategori dengan tombol menuju halaman kategori terkait.
+2. **Partnership & Contribution Marquee Component (`PartnershipMarquee.tsx`):**
+   - Buat komponen baru untuk menampilkan logo-logo perusahaan, institusi, atau organisasi tempat saya pernah berkontribusi / berkolaborasi (contoh: PT PLN, Universitas Brawijaya, dll.).
+   - Buat efek *infinite moving ticker / marquee* (bergerak halus secara horizontal terus-menerus).
+   - Tambahkan efek interaktif: Logo berformat grayscale dan berubah menjadi warna penuh saat di-hover, lengkap dengan tooltip nama instansi/peran singkat.
+   - Integrasikan komponen ini ke Homepage (`src/app/page.tsx`), misalnya di bawah Hero section atau section Experience/Timeline.
 
-#### C. Halaman Kategori Proyek (`/category/[slug]`)
-- Menampilkan daftar proyek sesuai kategori yang dipilih (`Web App`, `Mobile App`, `UI/UX`, `Business`) dalam bentuk grid card yang rapi (thumbnail, judul, deskripsi singkat, dan tag tools).
-- Ketika card diklik, buka **Halaman Detail Proyek** (`/project/[slug]`) atau Modal Preview interaktif yang berisi:
-  - Penjelasan lengkap proyek (problem, solution, role, hasil).
-  - **Media Previewer Terintegrasi:**
-    - **Foto:** Galeri gambar dengan fitur lightbox/zoom.
-    - **Video:** Pemutar video HTML5 bawaan yang responsif.
-    - **Dokumen (PDF/Presentasi):** Embedded document viewer (menggunakan `<iframe>` atau PDF viewer) agar pengunjung bisa langsung membaca dokumen/deck bisnis/studi kasus di halaman tersebut tanpa wajib mengunduhnya terlebih dahulu, disertai tombol download.
+3. **Dokumentasi & Changelog Wajib:**
+   - Setelah menyelesaikan semua kode, **buatkan sebuah file baru di root project bernama `CHANGELOG-ANIMATION.md`**.
+   - Di dalam file log tersebut, catat secara rinci:
+     - Daftar file yang dimodifikasi, dibuat baru, atau dihapus.
+     - Penjelasan teknis dari setiap animasi dan komponen baru yang ditambahkan (library yang digunakan, cara kerja, dan optimasi performanya).
+     - Panduan singkat jika ada dependensi tambahan yang perlu diinstal (misalnya `npm i framer-motion lucide-react`, dll.).
 
-#### D. Halaman Admin (`/admin` & `/login`)
-- **Autentikasi:** Halaman `/login` menggunakan Supabase Auth (Email & Password). Proteksi seluruh rute `/admin/*` menggunakan Next.js Middleware agar tidak bisa diakses publik.
-- **Dashboard Admin (`/admin`):**
-  - **Manajemen Profil/CV:** Form untuk mengedit data diri, pengalaman, pendidikan, skills, dan mengunggah file CV terbaru.
-  - **Manajemen Proyek (CRUD):**
-    - Daftar semua proyek dengan filter kategori dan tombol Edit/Hapus.
-    - Form Tambah/Edit Proyek dengan fitur **Multi-file Drag & Drop Upload** ke Supabase Storage yang mendukung upload banyak foto, video (MP4/WebM), dan dokumen (PDF) sekaligus, lengkap dengan progress bar upload dan preview sebelum disimpan.
-
-### 3. Desain & Pengalaman Pengguna (UI/UX)
-- Gunakan desain minimalis, modern, dan profesional (gunakan ikon dari `lucide-react`).
-- Pastikan seluruh komponen (terutama video player, document previewer, dan tabel admin) sepenuhnya responsif untuk tampilan desktop maupun mobile.
-- Sertakan loading skeletons saat mengambil data dari Supabase dan notifikasi toast saat berhasil/gagal menyimpan data.
-
-Buatkan struktur folder proyek secara lengkap, kode untuk setiap file utama, dan langkah-langkah konfigurasi awal di Supabase sebelum melakukan deployment ke Vercel.
+Harap berikan kode lengkap untuk file-file baru yang dibuat, pembaruan file yang ada, serta isi file `CHANGELOG-ANIMATION.md` secara terstruktur dan siap di-copy ke project saya.

@@ -25,6 +25,9 @@ import { FALLBACK_PROFILE, FALLBACK_PROJECTS } from '@/lib/data';
 import { Profile, Project } from '@/lib/types';
 import { Timeline } from '@/components/Timeline';
 import { ProjectCard } from '@/components/ProjectCard';
+import { PartnershipMarquee } from '@/components/PartnershipMarquee';
+import { MotionReveal, MotionStaggerContainer, MotionStaggerItem } from '@/components/MotionReveal';
+import { RippleEffect } from '@/components/RippleEffect';
 
 export const revalidate = 0; // Dynamic rendering for fresh Supabase data
 
@@ -85,7 +88,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
 
             {/* Left Column: Intro & Content (7 Cols) */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <MotionReveal direction="up" delay={0.1} className="lg:col-span-7 space-y-6 text-center lg:text-left">
               {/* Status pill */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-50/90 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 shadow-xs backdrop-blur-md">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20" />
@@ -114,16 +117,18 @@ export default async function HomePage() {
               {/* CTA Buttons */}
               <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
                 {profile.cv_file_url ? (
-                  <a
-                    href={profile.cv_file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    download
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95"
-                  >
-                    <Download className="w-4 h-4" />
-                    Unduh CV / Resume
-                  </a>
+                  <RippleEffect color="rgba(255, 255, 255, 0.4)" className="rounded-2xl">
+                    <a
+                      href={profile.cv_file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95"
+                    >
+                      <Download className="w-4 h-4" />
+                      Unduh CV / Resume
+                    </a>
+                  </RippleEffect>
                 ) : (
                   <button
                     disabled
@@ -135,13 +140,15 @@ export default async function HomePage() {
                 )}
 
                 {profile.contact_email && (
-                  <a
-                    href={`mailto:${profile.contact_email}`}
-                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 transition-all hover:scale-105 shadow-sm backdrop-blur-md"
-                  >
-                    <Mail className="w-4 h-4 text-indigo-500" />
-                    Hubungi Saya
-                  </a>
+                  <RippleEffect color="rgba(99, 102, 241, 0.2)" className="rounded-2xl">
+                    <a
+                      href={`mailto:${profile.contact_email}`}
+                      className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 transition-all hover:scale-105 shadow-sm backdrop-blur-md active:scale-95"
+                    >
+                      <Mail className="w-4 h-4 text-indigo-500" />
+                      Hubungi Saya
+                    </a>
+                  </RippleEffect>
                 )}
 
                 <a
@@ -160,7 +167,7 @@ export default async function HomePage() {
                       href={socialLinks.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 transition-all shadow-2xs"
+                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 active:scale-95 transition-all shadow-2xs"
                       title="LinkedIn"
                     >
                       <Linkedin className="w-4 h-4" />
@@ -171,7 +178,7 @@ export default async function HomePage() {
                       href={socialLinks.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 transition-all shadow-2xs"
+                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 active:scale-95 transition-all shadow-2xs"
                       title="GitHub"
                     >
                       <Github className="w-4 h-4" />
@@ -182,7 +189,7 @@ export default async function HomePage() {
                       href={socialLinks.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 transition-all shadow-2xs"
+                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 active:scale-95 transition-all shadow-2xs"
                       title="Twitter / X"
                     >
                       <Twitter className="w-4 h-4" />
@@ -193,7 +200,7 @@ export default async function HomePage() {
                       href={socialLinks.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 transition-all shadow-2xs"
+                      className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-110 active:scale-95 transition-all shadow-2xs"
                       title="Personal Website"
                     >
                       <Globe className="w-4 h-4" />
@@ -201,10 +208,10 @@ export default async function HomePage() {
                   )}
                 </div>
               </div>
-            </div>
+            </MotionReveal>
 
             {/* Right Column: Full Body Photo Showcase (5 Cols) */}
-            <div className="lg:col-span-5 flex justify-center relative">
+            <MotionReveal direction="none" delay={0.2} className="lg:col-span-5 flex justify-center relative">
               {/* Outer Decorative Ring & Glow */}
               <div className="relative w-full max-w-sm sm:max-w-md">
                 <div className="absolute -inset-4 bg-gradient-to-tr from-indigo-500/30 via-purple-500/30 to-pink-500/20 rounded-[2.5rem] blur-2xl opacity-75 group-hover:opacity-100 transition-opacity" />
@@ -253,102 +260,119 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </MotionReveal>
 
           </div>
         </div>
       </section>
 
-      {/* 2. Category Quick Cards with Glassmorphism */}
+      {/* 2. Partnership & Collaboration Marquee Component */}
+      <MotionReveal direction="up" delay={0.15}>
+        <PartnershipMarquee />
+      </MotionReveal>
+
+      {/* 3. Category Quick Cards with Glassmorphism */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          <Link
-            href="/category/web-app"
-            className="p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-blue-400 dark:hover:border-blue-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
-              <Code2 className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Web App</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Next.js, React, Node.js</p>
-          </Link>
+        <MotionStaggerContainer staggerDelay={0.1} className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <MotionStaggerItem>
+            <Link
+              href="/category/web-app"
+              className="block h-full p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-blue-400 dark:hover:border-blue-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1.5"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
+                <Code2 className="w-6 h-6" />
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Web App</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Next.js, React, Node.js</p>
+            </Link>
+          </MotionStaggerItem>
 
-          <Link
-            href="/category/mobile-app"
-            className="p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-purple-400 dark:hover:border-purple-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
-              <Smartphone className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Mobile App</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">React Native, Flutter</p>
-          </Link>
+          <MotionStaggerItem>
+            <Link
+              href="/category/mobile-app"
+              className="block h-full p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-purple-400 dark:hover:border-purple-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1.5"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
+                <Smartphone className="w-6 h-6" />
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Mobile App</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">React Native, Flutter</p>
+            </Link>
+          </MotionStaggerItem>
 
-          <Link
-            href="/category/ui-ux"
-            className="p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-pink-400 dark:hover:border-pink-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
-              <Palette className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base">UI/UX</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Figma, Design System</p>
-          </Link>
+          <MotionStaggerItem>
+            <Link
+              href="/category/ui-ux"
+              className="block h-full p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-pink-400 dark:hover:border-pink-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1.5"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
+                <Palette className="w-6 h-6" />
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-base">UI/UX</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Figma, Design System</p>
+            </Link>
+          </MotionStaggerItem>
 
-          <Link
-            href="/category/business"
-            className="p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-emerald-400 dark:hover:border-emerald-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
-              <Briefcase className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Business</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Pitch Deck, Model Bisnis</p>
-          </Link>
-        </div>
+          <MotionStaggerItem>
+            <Link
+              href="/category/business"
+              className="block h-full p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/50 backdrop-blur-md hover:border-emerald-400 dark:hover:border-emerald-500/50 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1.5"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-xs">
+                <Briefcase className="w-6 h-6" />
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Business</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Pitch Deck, Model Bisnis</p>
+            </Link>
+          </MotionStaggerItem>
+        </MotionStaggerContainer>
       </section>
 
-      {/* 3. About & Skills */}
+      {/* 4. About & Skills */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl shadow-sm space-y-8">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-              <Sparkles className="w-6 h-6 text-indigo-500" />
-              Tentang & Keahlian Teknis
-            </h2>
-            <p className="mt-4 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-              {profile.about}
-            </p>
+        <MotionReveal direction="up" delay={0.1}>
+          <div className="p-8 sm:p-12 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl shadow-sm space-y-8">
+            <div className="max-w-3xl">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                <Sparkles className="w-6 h-6 text-indigo-500" />
+                Tentang & Keahlian Teknis
+              </h2>
+              <p className="mt-4 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                {profile.about}
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                Teknologi & Tools Utama
+              </h3>
+              <div className="flex flex-wrap gap-2.5">
+                {profile.skills && profile.skills.map((skill, idx) => (
+                  <div
+                    key={idx}
+                    className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium bg-slate-100/90 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/60 hover:border-indigo-400 dark:hover:border-indigo-500 hover:scale-105 transition-all flex items-center gap-1.5 shadow-2xs"
+                  >
+                    <CheckCircle className="w-3.5 h-3.5 text-indigo-500" />
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-              Teknologi & Tools Utama
-            </h3>
-            <div className="flex flex-wrap gap-2.5">
-              {profile.skills && profile.skills.map((skill, idx) => (
-                <div
-                  key={idx}
-                  className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium bg-slate-100/90 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/60 hover:border-indigo-400 dark:hover:border-indigo-500 transition-colors flex items-center gap-1.5 shadow-2xs"
-                >
-                  <CheckCircle className="w-3.5 h-3.5 text-indigo-500" />
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        </MotionReveal>
       </section>
 
-      {/* 4. Experience & Education Timeline */}
+      {/* 5. Experience & Education Timeline */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Timeline experience={profile.experience} education={profile.education} />
+        <MotionReveal direction="up" delay={0.1}>
+          <Timeline experience={profile.experience} education={profile.education} />
+        </MotionReveal>
       </section>
 
-      {/* 5. Featured Projects Showcase */}
+      {/* 6. Featured Projects Showcase */}
       <section id="koleksi-proyek" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-24">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <MotionReveal direction="up" delay={0.1} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider">
               <Layers className="w-4 h-4" />
@@ -363,20 +387,24 @@ export default async function HomePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/category/web-app"
-              className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors shadow-2xs"
-            >
-              Lihat Semua Kategori →
-            </Link>
+            <RippleEffect color="rgba(99, 102, 241, 0.15)" className="rounded-xl">
+              <Link
+                href="/category/web-app"
+                className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors shadow-2xs block"
+              >
+                Lihat Semua Kategori →
+              </Link>
+            </RippleEffect>
           </div>
-        </div>
+        </MotionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <MotionStaggerContainer staggerDelay={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((proj) => (
-            <ProjectCard key={proj.id} project={proj} />
+            <MotionStaggerItem key={proj.id}>
+              <ProjectCard project={proj} />
+            </MotionStaggerItem>
           ))}
-        </div>
+        </MotionStaggerContainer>
       </section>
     </div>
   );

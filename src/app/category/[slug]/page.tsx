@@ -14,6 +14,7 @@ import { FALLBACK_PROJECTS } from '@/lib/data';
 import { Project } from '@/lib/types';
 import { CATEGORY_MAP, getCategoryFromSlug } from '@/lib/utils';
 import { ProjectCard } from '@/components/ProjectCard';
+import { MotionReveal, MotionStaggerContainer, MotionStaggerItem } from '@/components/MotionReveal';
 
 export const revalidate = 0;
 
@@ -77,53 +78,59 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </div>
 
       {/* Category Header Banner */}
-      <div className="relative p-8 sm:p-12 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/30 dark:from-slate-900 dark:via-slate-900/60 dark:to-indigo-950/20 shadow-sm overflow-hidden">
-        <div className="relative z-10 max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-700 shadow-xs">
-            <Icon className="w-3.5 h-3.5" />
-            Kategori Portofolio
+      <MotionReveal direction="up" delay={0.05}>
+        <div className="relative p-8 sm:p-12 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/30 dark:from-slate-900 dark:via-slate-900/60 dark:to-indigo-950/20 shadow-sm overflow-hidden">
+          <div className="relative z-10 max-w-2xl space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border border-slate-200 dark:border-slate-700 shadow-xs">
+              <Icon className="w-3.5 h-3.5" />
+              Kategori Portofolio
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              {categoryData.label}
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              {categoryData.description}
+            </p>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {categoryData.label}
-          </h1>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-            {categoryData.description}
-          </p>
-        </div>
 
-        {/* Ambient Decorative Icon */}
-        <div className="absolute right-4 bottom-4 sm:right-8 sm:bottom-6 text-slate-200/60 dark:text-slate-800/40 pointer-events-none">
-          <Icon className="w-32 h-32 sm:w-48 sm:h-48 stroke-1" />
+          {/* Ambient Decorative Icon */}
+          <div className="absolute right-4 bottom-4 sm:right-8 sm:bottom-6 text-slate-200/60 dark:text-slate-800/40 pointer-events-none">
+            <Icon className="w-32 h-32 sm:w-48 sm:h-48 stroke-1" />
+          </div>
         </div>
-      </div>
+      </MotionReveal>
 
       {/* Category Pills Navigation */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
-        {Object.entries(CATEGORY_MAP).map(([slug, item]) => {
-          const isActive = slug === params.slug;
-          return (
-            <Link
-              key={slug}
-              href={`/category/${slug}`}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                isActive
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                  : 'bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-              }`}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-      </div>
+      <MotionReveal direction="up" delay={0.1}>
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+          {Object.entries(CATEGORY_MAP).map(([slug, item]) => {
+            const isActive = slug === params.slug;
+            return (
+              <Link
+                key={slug}
+                href={`/category/${slug}`}
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                  isActive
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20 scale-105'
+                    : 'bg-slate-100 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      </MotionReveal>
 
       {/* Projects Grid */}
       {projects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <MotionStaggerContainer staggerDelay={0.08} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <MotionStaggerItem key={project.id}>
+              <ProjectCard project={project} />
+            </MotionStaggerItem>
           ))}
-        </div>
+        </MotionStaggerContainer>
       ) : (
         <div className="p-16 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50/50 dark:bg-slate-900/30 space-y-3">
           <FolderSearch className="w-12 h-12 text-slate-400 mx-auto stroke-1" />

@@ -18,6 +18,8 @@ import { FALLBACK_PROJECTS } from '@/lib/data';
 import { Project } from '@/lib/types';
 import { getSlugFromCategory, formatExternalUrl } from '@/lib/utils';
 import { MediaViewer } from '@/components/MediaViewer';
+import { MotionReveal } from '@/components/MotionReveal';
+import { RippleEffect } from '@/components/RippleEffect';
 
 export const revalidate = 0;
 
@@ -63,7 +65,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       {/* Top Navigation / Breadcrumbs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+      <MotionReveal direction="down" delay={0.05} className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-slate-100 dark:border-slate-800/80">
         <Link
           href={`/category/${categorySlug}`}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
@@ -75,32 +77,36 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         {/* Top Quick Action Buttons */}
         <div className="flex items-center gap-2.5">
           {formattedRepoUrl && (
-            <a
-              href={formattedRepoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-2xs hover:scale-105"
-            >
-              <Github className="w-3.5 h-3.5" />
-              <span>GitHub</span>
-            </a>
+            <RippleEffect color="rgba(99, 102, 241, 0.15)" className="rounded-xl">
+              <a
+                href={formattedRepoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-2xs hover:scale-105 active:scale-95"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>GitHub</span>
+              </a>
+            </RippleEffect>
           )}
           {formattedLiveUrl && (
-            <a
-              href={formattedLiveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition-all shadow-sm shadow-indigo-600/20 hover:scale-105"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Live Demo</span>
-            </a>
+            <RippleEffect color="rgba(255, 255, 255, 0.35)" className="rounded-xl">
+              <a
+                href={formattedLiveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition-all shadow-sm shadow-indigo-600/20 hover:scale-105 active:scale-95"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Live Demo</span>
+              </a>
+            </RippleEffect>
           )}
         </div>
-      </div>
+      </MotionReveal>
 
       {/* Project Header Info */}
-      <div className="space-y-6">
+      <MotionReveal direction="up" delay={0.1} className="space-y-6">
         <div className="flex flex-wrap items-center gap-3">
           <Link
             href={`/category/${categorySlug}`}
@@ -144,27 +150,31 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         {(formattedLiveUrl || formattedRepoUrl) ? (
           <div className="pt-2 flex flex-wrap items-center gap-3.5">
             {formattedLiveUrl && (
-              <a
-                href={formattedLiveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/25 transition-all hover:scale-105"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span>Kunjungi Live Demo</span>
-              </a>
+              <RippleEffect color="rgba(255, 255, 255, 0.4)" className="rounded-2xl">
+                <a
+                  href={formattedLiveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/25 transition-all hover:scale-105 active:scale-95"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Kunjungi Live Demo</span>
+                </a>
+              </RippleEffect>
             )}
 
             {formattedRepoUrl && (
-              <a
-                href={formattedRepoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:scale-105 shadow-sm"
-              >
-                <Github className="w-4 h-4" />
-                <span>Source Code GitHub</span>
-              </a>
+              <RippleEffect color="rgba(99, 102, 241, 0.15)" className="rounded-2xl">
+                <a
+                  href={formattedRepoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                >
+                  <Github className="w-4 h-4" />
+                  <span>Source Code GitHub</span>
+                </a>
+              </RippleEffect>
             )}
           </div>
         ) : (
@@ -175,84 +185,92 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             </span>
           </div>
         )}
-      </div>
+      </MotionReveal>
 
       {/* Media Viewer Component: Photo Lightbox, HTML5 Video, Embedded Document Viewer */}
-      <section className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-indigo-500" />
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              Media & Pratinjau Interaktif
-            </h2>
+      <MotionReveal direction="up" delay={0.15}>
+        <section className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-indigo-500" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Media & Pratinjau Interaktif
+              </h2>
+            </div>
+            <span className="text-xs text-slate-400">
+              Foto • Video • Dokumen / Slide
+            </span>
           </div>
-          <span className="text-xs text-slate-400">
-            Foto • Video • Dokumen / Slide
-          </span>
-        </div>
 
-        <MediaViewer
-          mediaFiles={mediaFiles}
-          thumbnailUrl={project.thumbnail_url}
-        />
-      </section>
+          <MediaViewer
+            mediaFiles={mediaFiles}
+            thumbnailUrl={project.thumbnail_url}
+          />
+        </section>
+      </MotionReveal>
 
       {/* Project Case Study / Documentation Content */}
-      <section className="p-6 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/30 shadow-sm space-y-6">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white pb-4 border-b border-slate-100 dark:border-slate-800">
-          Uraian Studi Kasus & Rincian Teknis
-        </h2>
+      <MotionReveal direction="up" delay={0.2}>
+        <section className="p-6 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/30 shadow-sm space-y-6">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white pb-4 border-b border-slate-100 dark:border-slate-800">
+            Uraian Studi Kasus & Rincian Teknis
+          </h2>
 
-        <div className="prose dark:prose-invert max-w-none prose-slate prose-headings:font-bold prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-2 prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-ul:my-2 prose-strong:text-slate-900 dark:prose-strong:text-white">
-          {project.content ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {project.content}
-            </ReactMarkdown>
-          ) : (
-            <p className="italic text-slate-400">
-              Belum ada deskripsi lengkap atau studi kasus untuk proyek ini.
-            </p>
-          )}
-        </div>
-
-        {/* Bottom CTA Section */}
-        {(formattedLiveUrl || formattedRepoUrl) && (
-          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/70 dark:bg-slate-800/40 p-5 rounded-2xl">
-            <div>
-              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-                Tertarik melihat proyek ini secara langsung?
+          <div className="prose dark:prose-invert max-w-none prose-slate prose-headings:font-bold prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-2 prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-ul:my-2 prose-strong:text-slate-900 dark:prose-strong:text-white">
+            {project.content ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {project.content}
+              </ReactMarkdown>
+            ) : (
+              <p className="italic text-slate-400">
+                Belum ada deskripsi lengkap atau studi kasus untuk proyek ini.
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Akses demo online atau periksa kode sumber di repositori.
-              </p>
-            </div>
-            <div className="flex items-center gap-2.5">
-              {formattedRepoUrl && (
-                <a
-                  href={formattedRepoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  GitHub
-                </a>
-              )}
-              {formattedLiveUrl && (
-                <a
-                  href={formattedLiveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-colors"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Live Demo
-                </a>
-              )}
-            </div>
+            )}
           </div>
-        )}
-      </section>
+
+          {/* Bottom CTA Section */}
+          {(formattedLiveUrl || formattedRepoUrl) && (
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/70 dark:bg-slate-800/40 p-5 rounded-2xl">
+              <div>
+                <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  Tertarik melihat proyek ini secara langsung?
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Akses demo online atau periksa kode sumber di repositori.
+                </p>
+              </div>
+              <div className="flex items-center gap-2.5">
+                {formattedRepoUrl && (
+                  <RippleEffect color="rgba(99, 102, 241, 0.15)" className="rounded-xl">
+                    <a
+                      href={formattedRepoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-2xs block"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                      GitHub
+                    </a>
+                  </RippleEffect>
+                )}
+                {formattedLiveUrl && (
+                  <RippleEffect color="rgba(255, 255, 255, 0.35)" className="rounded-xl">
+                    <a
+                      href={formattedLiveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-colors block"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Live Demo
+                    </a>
+                  </RippleEffect>
+                )}
+              </div>
+            </div>
+          )}
+        </section>
+      </MotionReveal>
     </div>
   );
 }
