@@ -28,6 +28,7 @@ import { ProjectCard } from '@/components/ProjectCard';
 import { PartnershipMarquee } from '@/components/PartnershipMarquee';
 import { MotionReveal, MotionStaggerContainer, MotionStaggerItem } from '@/components/MotionReveal';
 import { RippleEffect } from '@/components/RippleEffect';
+import { ProjectRingShowcase } from '@/components/ProjectRingShowcase';
 
 export const revalidate = 0; // Dynamic rendering for fresh Supabase data
 
@@ -370,42 +371,8 @@ export default async function HomePage() {
         </MotionReveal>
       </section>
 
-      {/* 6. Featured Projects Showcase */}
-      <section id="koleksi-proyek" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 scroll-mt-24">
-        <MotionReveal direction="up" delay={0.1} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider">
-              <Layers className="w-4 h-4" />
-              Showcase Proyek Unggulan
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
-              Koleksi Karya Terpilih
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Jelajahi beberapa proyek unggulan dari kategori Web, Mobile, UI/UX, dan Business
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <RippleEffect color="rgba(99, 102, 241, 0.15)" className="rounded-xl">
-              <Link
-                href="/category/web-app"
-                className="text-xs font-semibold px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors shadow-2xs block"
-              >
-                Lihat Semua Kategori →
-              </Link>
-            </RippleEffect>
-          </div>
-        </MotionReveal>
-
-        <MotionStaggerContainer staggerDelay={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((proj) => (
-            <MotionStaggerItem key={proj.id}>
-              <ProjectCard project={proj} />
-            </MotionStaggerItem>
-          ))}
-        </MotionStaggerContainer>
-      </section>
+      {/* 6. Featured Projects Showcase (Interactive 3D Ring Carousel with Grid Fallback) */}
+      <ProjectRingShowcase projects={projects} />
     </div>
   );
 }
